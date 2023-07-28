@@ -1,11 +1,51 @@
 import os
-import glob
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 from tensorflow.keras.preprocessing import image
 from keras_cv_attention_models import davit
 
 from typing import List, Union, Optional
+
+
+def plot_random_images_with_class(df: pd.DataFrame, n: int=5) -> None:
+    """
+    Visualize a random subset of the scraped images with their predicted classes.
+
+    Args:
+        df (pd.DataFrame): DataFrame containing predictions for the scraped images.
+        n (int): Number of random images to plot. Default = 5.
+
+    Returns:
+        None
+    
+    Raises:
+        None
+    """
+    # Shuffle the DataFrame and get random samples
+    shuffled_df = df.sample(frac=1).reset_index(drop=True)
+    n = min(n, len(shuffled_df))
+
+    # Create a grid for plotting
+    fig, axes = plt.subplots(1, n, figsize=(15, 3), squeeze=False)
+
+    for i in range(n):
+        # Get the image path and class label for the current sample
+        image_path = shuffled_df.loc[i, 'Image Name']
+        classification = shuffled_df.loc[i, 'Classification']
+
+        # Load and plot the image
+        img = mpimg.imread(os.path.join(image_path.rsplit('_', 1)[0], image_path))
+        axes[0, i].imshow(img)
+        axes[0, i].axis('off')
+
+        # Display the predicted class below the image
+        axes[0, i].set_title(f'Predicted: {classification}')
+
+    plt.tight_layout()
+    plt.show()
+
 
 
 def load_image(img_path: Union[str, os.PathLike]) -> np.ndarray:
@@ -88,7 +128,23 @@ def predict_scraped_images(object_classes: List[str],
         return results_df
     
 
-def find_directories_with_images():
+def find_directories_with_images() -> List[str]:
+    """
+    Find directories containing images.
+
+    This function searches for image files with extensions ['.jpg', '.jpeg', '.png', '.gif', '.bmp']
+    in the current directory and its subdirectories using os.walk(). It returns a list of directory
+    paths containing at least one image file.
+
+    Args:
+        None
+
+    Returns:
+        List[str]: A list of directory paths containing image files.
+    
+    Raises:
+        None
+    """
     image_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp'] 
 
     image_directories = []
