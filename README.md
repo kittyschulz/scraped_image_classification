@@ -13,7 +13,7 @@ Because ViTs operate on the "patch-level", they can require fewer parameters tha
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/kittyschulz/scraped_image_classification/blob/main/scrape_and_classify.ipynb)
 
-An Jupyter Notebook for this project is hosted on Google Colab, where you can play around with both scraping imagery from Google Images and running inference on these images using the tiny DaVit model.
+A Jupyter Notebook for this project is hosted on Google Colab, where you can play around with both scraping imagery from Google Images and running inference on these images using the tiny DaVit model.
 
 Alternatively, the code can be run locally from the command line. To scrape imagery, call `scrape.py` and enter your key words, comma separated (for example, `horse,dog,stop sign,car`) and the number of images that should be downloaded for each class.
 
